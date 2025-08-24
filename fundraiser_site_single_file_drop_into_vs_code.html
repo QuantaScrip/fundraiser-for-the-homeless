@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Winzy Aid • Community Fundraiser</title>
+  <meta name="description" content="A transparent, community-powered fundraiser helping people in need." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    html, body { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", "Noto Sans", sans-serif; }
+    .glass { backdrop-filter: blur(10px); background: rgba(255,255,255,0.08); }
+    .shimmer { background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.4) 50%, rgba(255,255,255,0) 100%); background-size: 200% 100%; animation: shimmer 3s infinite; }
+    @keyframes shimmer { 0% {background-position: 200% 0;} 100% {background-position: -200% 0;} }
+    .grid-bg { background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px); background-size: 24px 24px; }
+    .tilt { transform: rotate(-1.2deg); }
+    .btn { transition: transform .08s ease, box-shadow .2s ease; }
+    .btn:active { transform: translateY(1px) scale(0.99); }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white">
+  <!-- Header -->
+  <header class="sticky top-0 z-50 border-b border-white/10 bg-slate-950/70 backdrop-blur">
+    <div class="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="h-9 w-9 rounded-2xl bg-indigo-500/20 flex items-center justify-center ring-1 ring-white/15">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-indigo-300">
+            <path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2Zm1 14.93V20h-2v-3.07A8.016 8.016 0 0 1 4.07 13H1v-2h3.07A8.016 8.016 0 0 1 11 4.07V1h2v3.07A8.016 8.016 0 0 1 19.93 11H23v2h-3.07A8.016 8.016 0 0 1 13 16.93Z"/>
+          </svg>
+        </div>
+        <span class="font-extrabold tracking-tight text-lg">Winzy Aid</span>
+      </div>
+      <nav class="hidden sm:flex items-center gap-6 text-sm text-white/80">
+        <a href="#how" class="hover:text-white">How it works</a>
+        <a href="#impact" class="hover:text-white">Impact</a>
+        <a href="#faq" class="hover:text-white">FAQ</a>
+        <a href="#donate" class="px-3 py-1.5 rounded-xl bg-indigo-500/20 ring-1 ring-indigo-400/30 hover:bg-indigo-500/30">Donate</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="relative overflow-hidden">
+    <div class="absolute inset-0 grid-bg opacity-40"></div>
+    <div class="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-indigo-600 blur-3xl opacity-30"></div>
+    <div class="absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-fuchsia-600 blur-3xl opacity-30"></div>
+
+    <div class="mx-auto max-w-7xl px-4 py-20 sm:py-28">
+      <div class="grid lg:grid-cols-2 gap-10 items-center">
+        <div>
+          <h1 class="text-4xl sm:text-6xl font-extrabold leading-tight">Fuel direct help for people who need it most.</h1>
+          <p class="mt-4 text-white/80 text-lg">This community fundraiser powers essentials—food, bills, and emergency needs. 100% of donations go to the fund. Transparent goals, live progress.</p>
+          <div class="mt-6 flex flex-col sm:flex-row gap-3">
+            <a href="#donate" class="btn inline-flex items-center justify-center rounded-2xl px-5 py-3 bg-white text-slate-900 font-semibold shadow-lg hover:shadow-xl">Donate now</a>
+            <a href="#how" class="btn inline-flex items-center justify-center rounded-2xl px-5 py-3 bg-slate-800/60 ring-1 ring-white/10 font-semibold hover:bg-slate-800">How it works</a>
+          </div>
+          <p class="mt-4 text-xs text-white/60">Max single donation: $10,000,000</p>
+        </div>
+        <div class="relative">
+          <div class="glass rounded-3xl p-6 sm:p-8 border border-white/10 shadow-2xl">
+            <div class="flex items-center justify-between">
+              <h2 class="text-lg font-bold">Current Goal</h2>
+              <div class="text-sm text-white/70">Goal: <span id="goalLabel">$100,000</span></div>
+            </div>
+            <div class="mt-3 w-full h-3 rounded-full bg-white/10 overflow-hidden">
+              <div id="progressBar" class="h-full bg-gradient-to-r from-indigo-400 to-fuchsia-400 shimmer" style="width: 12%"></div>
+            </div>
+            <div class="mt-2 flex items-center justify-between text-sm text-white/80">
+              <div>Raised: <span id="raisedLabel">$12,345</span></div>
+              <div><span id="percentLabel">12.3%</span></div>
+            </div>
+            <div class="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-2">
+              <button data-amount="10" class="btn quick-amt rounded-xl px-3 py-2 ring-1 ring-white/15 bg-white/5 hover:bg-white/10">$10</button>
+              <button data-amount="25" class="btn quick-amt rounded-xl px-3 py-2 ring-1 ring-white/15 bg-white/5 hover:bg-white/10">$25</button>
+              <button data-amount="50" class="btn quick-amt rounded-xl px-3 py-2 ring-1 ring-white/15 bg-white/5 hover:bg-white/10">$50</button>
+              <button data-amount="100" class="btn quick-amt rounded-xl px-3 py-2 ring-1 ring-white/15 bg-white/5 hover:bg-white/10">$100</button>
+            </div>
+            <form id="donationForm" class="mt-4" novalidate>
+              <label for="amount" class="block text-sm mb-1">Custom amount</label>
+              <div class="flex gap-2">
+                <div class="relative flex-1">
+                  <span class="absolute left-3 top-2.5 text-white/60">$</span>
+                  <input id="amount" type="number" inputmode="numeric" min="1" max="10000000" step="1" placeholder="50" class="w-full rounded-xl bg-slate-900/60 ring-1 ring-white/15 px-7 py-2 outline-none focus:ring-indigo-400/50" required>
+                </div>
+                <button id="donateBtn" class="btn rounded-xl px-5 py-2 bg-indigo-500 font-semibold text-white hover:bg-indigo-400" type="submit">Donate</button>
+              </div>
+              <p id="amountHelp" class="mt-2 text-xs text-white/60">Enter any amount from $1 to $10,000,000.</p>
+              <p id="errorMsg" class="hidden mt-2 text-sm text-rose-300"></p>
+            </form>
+            <p class="mt-4 text-xs text-white/60">Payments are securely processed via your chosen provider. By donating, you agree to the <a href="#faq" class="underline">terms</a>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section id="how" class="mx-auto max-w-7xl px-4 py-16">
+    <h2 class="text-2xl sm:text-3xl font-extrabold">How it works</h2>
+    <div class="mt-6 grid md:grid-cols-3 gap-6">
+      <div class="glass rounded-2xl p-6 border border-white/10">
+        <div class="text-white/80 font-semibold">1) You donate</div>
+        <p class="text-white/70 mt-1">Choose a preset or custom amount. Single donations are limited to $10,000,000 for safety.</p>
+      </div>
+      <div class="glass rounded-2xl p-6 border border-white/10">
+        <div class="text-white/80 font-semibold">2) We deploy funds</div>
+        <p class="text-white/70 mt-1">Funds help cover essentials—groceries, rent, medical, and emergencies for people in need.</p>
+      </div>
+      <div class="glass rounded-2xl p-6 border border-white/10">
+        <div class="text-white/80 font-semibold">3) You see the impact</div>
+        <p class="text-white/70 mt-1">Live totals, updates, and a transparent ledger are shared below.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Impact / Ledger (demo) -->
+  <section id="impact" class="mx-auto max-w-7xl px-4 pb-20">
+    <div class="grid lg:grid-cols-3 gap-8">
+      <div class="lg:col-span-2">
+        <h3 class="text-xl font-bold">Recent Support</h3>
+        <ul id="feed" class="mt-4 space-y-3"></ul>
+      </div>
+      <aside class="glass rounded-2xl p-6 border border-white/10 h-fit">
+        <h3 class="text-xl font-bold">Your donation, your way</h3>
+        <p class="text-white/70 mt-2">Prefer PayPal, Cash App, or card? Use the button below. Replace this link with your own payment page in <span class="font-semibold">script settings</span>.</p>
+        <a id="payLink" href="#" target="_blank" rel="noopener" class="mt-4 inline-flex items-center justify-center w-full rounded-xl bg-white text-slate-900 font-semibold px-4 py-2 hover:bg-white/90">Open payment page</a>
+        <p class="text-xs text-white/50 mt-3">Tip: connect Stripe Checkout or PayPal to accept cards securely.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="mx-auto max-w-7xl px-4 pb-24">
+    <h2 class="text-2xl sm:text-3xl font-extrabold">FAQ</h2>
+    <div class="mt-6 space-y-4">
+      <details class="glass rounded-2xl p-5 border border-white/10">
+        <summary class="cursor-pointer font-semibold">Where does the money go?</summary>
+        <p class="mt-2 text-white/70">Funds are used to support people experiencing financial hardship (food, rent, utilities, medical, emergencies). A summary ledger and updates will be posted on this page.</p>
+      </details>
+      <details class="glass rounded-2xl p-5 border border-white/10">
+        <summary class="cursor-pointer font-semibold">Is this tax-deductible?</summary>
+        <p class="mt-2 text-white/70">Donations to individuals are typically <span class="font-semibold">not</span> tax-deductible. If you need a deductible receipt, donate via a registered nonprofit.</p>
+      </details>
+      <details class="glass rounded-2xl p-5 border border-white/10">
+        <summary class="cursor-pointer font-semibold">What is the max donation?</summary>
+        <p class="mt-2 text-white/70">Single donations are capped at $10,000,000. The form prevents higher amounts.</p>
+      </details>
+      <details class="glass rounded-2xl p-5 border border-white/10">
+        <summary class="cursor-pointer font-semibold">How do I verify transparency?</summary>
+        <p class="mt-2 text-white/70">We post regular updates and anonymized receipts. You can also join livestreams or view the public ledger spreadsheet.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/10">
+    <div class="mx-auto max-w-7xl px-4 py-8 text-sm text-white/60 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <span>© <span id="year"></span> Winzy Aid</span>
+      <div class="flex gap-4">
+        <a href="#faq" class="hover:text-white">Terms</a>
+        <a href="#faq" class="hover:text-white">Privacy</a>
+        <a href="#donate" class="hover:text-white">Donate</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // === CONFIGURE THESE ===
+    const SETTINGS = {
+      // Replace with your own goal and starting total
+      goal: 100000, // displayed goal
+      startRaised: 0, // starting raised amount
+      // Replace with your actual payment link (Stripe Checkout, PayPal, Cash App, etc.)
+      paymentLink: "https://example.com/your-payment-page"
+    };
+
+    // === STATE ===
+    const MAX_DONATION = 10_000_000; // $10,000,000
+    let raised = SETTINGS.startRaised;
+
+    // === ELEMENTS ===
+    const progressBar = document.getElementById('progressBar');
+    const raisedLabel = document.getElementById('raisedLabel');
+    const percentLabel = document.getElementById('percentLabel');
+    const goalLabel = document.getElementById('goalLabel');
+    const feed = document.getElementById('feed');
+    const year = document.getElementById('year');
+    const payLink = document.getElementById('payLink');
+
+    // Seed demo feed
+    const demo = [
+      { name: 'Alex', amount: 75, note: 'You got this!' },
+      { name: 'Sam', amount: 20, note: 'Sharing is caring.' },
+      { name: 'Anonymous', amount: 250, note: '' },
+    ];
+
+    function currency(n){
+      return n.toLocaleString(undefined, { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+    }
+
+    function updateProgress(){
+      const pct = Math.min(100, (raised / SETTINGS.goal) * 100);
+      progressBar.style.width = pct + '%';
+      raisedLabel.textContent = currency(raised);
+      percentLabel.textContent = pct.toFixed(1) + '%';
+      goalLabel.textContent = currency(SETTINGS.goal);
+    }
+
+    function addFeedItem(item){
+      const li = document.createElement('li');
+      li.className = 'glass border border-white/10 rounded-2xl p-4';
+      li.innerHTML = `<div class="flex items-center justify-between">
+          <div class="font-semibold">${item.name}</div>
+          <div class="text-white/80">${currency(item.amount)}</div>
+        </div>
+        ${item.note ? `<p class="text-white/70 mt-1">${item.note}</p>` : ''}`;
+      feed.prepend(li);
+    }
+
+    // Initialize
+    year.textContent = new Date().getFullYear();
+    payLink.href = SETTINGS.paymentLink;
+    demo.forEach(addFeedItem);
+    updateProgress();
+
+    // Quick amount buttons
+    document.querySelectorAll('.quick-amt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.getElementById('amount').value = btn.dataset.amount;
+        document.getElementById('amount').focus();
+      });
+    });
+
+    // Donation handling (front-end only)
+    document.getElementById('donationForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const input = document.getElementById('amount');
+      const error = document.getElementById('errorMsg');
+      error.classList.add('hidden');
+      let val = Number(input.value);
+
+      if (!Number.isFinite(val) || val < 1) {
+        error.textContent = 'Please enter at least $1.';
+        error.classList.remove('hidden');
+        return;
+      }
+      if (val > MAX_DONATION) {
+        error.textContent = 'The maximum single donation is $10,000,000.';
+        error.classList.remove('hidden');
+        val = MAX_DONATION;
+      }
+
+      // Front-end demo: update progress locally
+      raised += Math.floor(val);
+      addFeedItem({ name: 'You', amount: Math.floor(val), note: '✨ Thank you!' });
+      updateProgress();
+
+      // In production, redirect to your payment provider with the amount
+      // Example: Stripe Checkout, PayPal, etc. Replace with your link builder.
+      // window.location.href = `${SETTINGS.paymentLink}?amount=${Math.floor(val)}`;
+
+      // For demo, just open the payment page in a new tab
+      window.open(SETTINGS.paymentLink, '_blank');
+      e.target.reset();
+    });
+  </script>
+</body>
+</html>
